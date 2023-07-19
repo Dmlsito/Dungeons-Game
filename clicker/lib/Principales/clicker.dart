@@ -4,6 +4,8 @@ import 'package:clicker/Complementos/NivelesDeMejoras.dart';
 import 'package:clicker/Complementos/snackBars.dart';
 import 'package:clicker/Improves/improves.dart';
 import 'package:clicker/RecuperacionDatos/comprobaciones.dart';
+import 'package:clicker/playerActions.dart/actions.dart';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -187,13 +189,7 @@ int cantidadBombasV2 = 6;
 int cantidadBombasV3 = 9;
 int danoBomba = 400;
 
-//Variables de mejora 8
-int contadorMejora8 = 0;
-int precio1Mejora8 = 100;
-int precio2Mejora8 = 200;
-int precio3Mejora8 = 300;
-int precioMejoraGlobal8 = 100;
-bool mejora8Utilizada = true;
+
 
 //Variables de mejora9
 int contadorMejora9 = 0;
@@ -288,6 +284,7 @@ var anchoPantalla, alturaPantalla, size;
 
 //Instacia de la clase NivelesDeMejora
 NivelesDeMejoras incrementoMejoras = NivelesDeMejoras();
+ActionsPlayer playerAction = new ActionsPlayer();
 
 //Instancia de la clase SnackBars
 
@@ -377,143 +374,8 @@ class StatesAppState extends State<StatesApp> {
 
 
 
-    void mejora6() {
-      if (contadorMejora6 == 0 && datosJugador.monedas > precio1Mejora6) {
-        snackBars.mostrarMejoraComprada(context);
-        //En este primer nivel de mejora el jugador tendra un 20% de probabilidad de q la bomba explote
-        Random bombaVersion1 = Random();
-        int rngBomba = bombaVersion1.nextInt(4);
-        setState(() {
-          if (rngBomba == 2) {
-            vida = vida - vida;
-          }
-          datosJugador.monedas = datosJugador.monedas - precio1Mejora6;
-          //Actualizamos el precio de la mejora
-          precioMejoraGlobal6 = precio2Mejora6;
-          player.play(AssetSource("SonidoMuerteCalavera.mp3"));
-        });
-
-        //Seteamos a true la variable que controla la aparicion de el indicador de mejora
-        mejora6V1 = true;
-        //Actualizamos las monedas del jugador
-        contadorMejora6++;
-      }
-      if (contadorMejora6 == 1 && datosJugador.monedas > precio2Mejora6) {
-        snackBars.mostrarMejoraComprada(context);
-        //En este primer nivel de mejora el jugador tendra un 37.5% de probabilidad de q la bomba explote
-        Random bombaVersion2 = Random();
-        int rngBomba = bombaVersion2.nextInt(3);
-        setState(() {
-          if (rngBomba == 2) {
-            vida = vida - vida;
-          }
-          datosJugador.monedas = datosJugador.monedas - precio2Mejora6;
-          precioMejoraGlobal6 = precio3Mejora6;
-          player.play(AssetSource("SonidoMuerteCalavera.mp3"));
-        });
-
-        mejora6V2 = true;
-        contadorMejora6++;
-      }
-
-      if (contadorMejora6 == 2 && datosJugador.monedas > precio3Mejora6) {
-        snackBars.mostrarMejoraComprada(context);
-        snackBars.mostrarMaximaMejora(context);
-        //En este primer nivel de mejora el jugador tendra un 37.5% de probabilidad de q la bomba explote
-        Random bombaVersion2 = Random();
-        int rngBomba = bombaVersion2.nextInt(1);
-        setState(() {
-          if (rngBomba == 0) {
-            vida = vida - vida;
-          }
-          datosJugador.monedas = datosJugador.monedas - precio3Mejora6;
-          player.play(AssetSource("SonidoMuerteCalavera.mp3"));
-        });
-
-        mejora6V3 = true;
-        contadorMejora6++;
-      }
-      if (contadorMejora6 > 2 && datosJugador.monedas > precio3Mejora6) {
-        snackBars.mostrarMejoraComprada(context);
-
-        Random bombaVersion2 = Random();
-        int rngBomba = bombaVersion2.nextInt(1);
-        setState(() {
-          if (rngBomba == 0) {
-            vida = vida - vida;
-          }
-          player.play(AssetSource("SonidoMuerteCalavera.mp3"));
-         datosJugador.monedas = datosJugador.monedas - precio3Mejora6;
-        });
-      }
-    }
-
-    //Mejora7
-
-    void mejora7() {
-      if (contadorMejora7 == 0 && datosJugador.monedas > precio1Mejora7) {
-        snackBars.mostrarMejoraComprada(context);
-        setState(() {
-          //Actualizamos el numero de bombas que tenemos
-          bombas = bombas + cantidadBombasV1;
-          //Actualizamos el precio del jugador
-          datosJugador.monedas = datosJugador.monedas - precio1Mejora7;
-          player.play(AssetSource("SonidoBombasActivadas.mp3"));
-        });
-        //Actualizamos el precio de la mejora
-        precioMejoraGlobal7 = precio2Mejora7;
-        mejora7V1 = true;
-        //Incrementamos el contador
-        contadorMejora7++;
-      }
-      if (contadorMejora7 == 1 && datosJugador.monedas > precio2Mejora7) {
-        snackBars.mostrarMejoraComprada(context);
-        setState(() {
-          bombas = bombas + cantidadBombasV2;
-          datosJugador.monedas = datosJugador.monedas - precio2Mejora7;
-          precioMejoraGlobal7 = precio3Mejora7;
-          player.play(AssetSource("SonidoBombasActivadas.mp3"));
-        });
-        mejora7V2 = true;
-        contadorMejora7++;
-      }
-      if (contadorMejora7 == 2 && datosJugador.monedas > precio3Mejora7) {
-        snackBars.mostrarMejoraComprada(context);
-        snackBars.mostrarMaximaMejora(context);
-        setState(() {
-          bombas = bombas + cantidadBombasV3;
-          datosJugador.monedas = datosJugador.monedas - precio3Mejora7;
-          player.play(AssetSource("SonidoBombasActivadas.mp3"));
-        });
-
-        mejora7V3 = true;
-        //Incrementamos el contador
-        contadorMejora7++;
-      }
-      if (contadorMejora7 > 2 && datosJugador.monedas > precio3Mejora7) {
-        setState(() {
-          bombas = bombas + cantidadBombasV3;
-          datosJugador.monedas = datosJugador.monedas - precio3Mejora7;
-          player.play(AssetSource("SonidoBombasActivadas.mp3"));
-        });
-      }
-    }
-
-    //Mejora 8
-    void mejora8() {
-      if (contadorMejora8 == 0 && datosJugador.monedas > precio1Mejora8) {
-        setState(() {
-          datosJugador.monedas = datosJugador.monedas - precio1Mejora8;
-          precioMejoraGlobal8 = precio2Mejora8;
-          player.play(AssetSource("SonidoActivacionBufo.mp3"));
-        });
-        snackBars.mostrarMejoraComprada(context);
-
-        contadorMejora8++;
-
-        mejora8Utilizada = false;
-      }
-    }
+    
+    
 
     //Mejora 9
     void mejora9() {
@@ -702,25 +564,13 @@ class StatesAppState extends State<StatesApp> {
         });
       }
 
-      if (contadorMejora10 > 2 && mejora8Utilizada == false) {
+      if (contadorMejora10 > 2 && improve.mejora8Utilizada == false) {
         veneno = 500;
         setState(() {
           player.play(AssetSource("SonidoBufo.mp3"));
           vida = vida - veneno;
         });
         snackBars.bufoVeneno(context);
-      }
-    }
-
-    //Funcion de manejo de utilizacion bombas
-    void usarBomba() {
-      if (bombas > 0) {
-        setState(() {
-          //Al usar la bomba se le quitara vida al monstruo
-          vida = vida - danoBomba;
-          bombas = bombas - 1;
-          player.play(AssetSource("SonidoUsoBomba.mp3"));
-        });
       }
     }
 
@@ -1048,7 +898,7 @@ class StatesAppState extends State<StatesApp> {
                           Container(
                               margin: EdgeInsets.only(left: 40, top: 0),
                               child: Text(
-                                bombas.toString(),
+                                improve.bombas.toString(),
                                 style: TextStyle(
                                     fontSize: 25, color: Colors.white),
                               )),
@@ -1058,7 +908,10 @@ class StatesAppState extends State<StatesApp> {
                               child: InkWell(
                                 child: Image.asset("assets/Bomba.png"),
                                 onTap: () {
-                                  usarBomba();
+                                  setState(() {
+                                    playerAction.usarBomba(vida);
+                                  });
+                                 
                                 },
                               )),
                           Container(
@@ -2503,7 +2356,7 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento1Mejora7(mejora7V1),
+                                            .incremento1Mejora7(improve.mejora7V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2513,7 +2366,7 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento2Mejora7(mejora7V2),
+                                            .incremento2Mejora7(improve.mejora7V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2523,7 +2376,7 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento3Mejora7(mejora7V3),
+                                            .incremento3Mejora7(improve.mejora7V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2536,7 +2389,10 @@ class StatesAppState extends State<StatesApp> {
                                     height: 113,
                                     child: InkWell(
                                       onTap: () {
-                                        mejora7();
+                                        setState(() {
+                                          improve.mejora7(datosJugador, context);
+                                        });
+                                        
                                       },
                                     ),
                                     decoration: BoxDecoration(
@@ -2562,7 +2418,7 @@ class StatesAppState extends State<StatesApp> {
                                       Container(
                                           margin: EdgeInsets.only(left: 10),
                                           child: Text(
-                                              precioMejoraGlobal7.toString(),
+                                              improve.precioMejoraGlobal7.toString(),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14))),
@@ -2700,7 +2556,9 @@ class StatesAppState extends State<StatesApp> {
                                     height: 130,
                                     child: InkWell(
                                       onTap: () {
-                                        mejora8();
+                                        setState(() {
+                                          improve.mejora8(datosJugador, context);
+                                        });
                                       },
                                     ),
                                     decoration: BoxDecoration(
@@ -2726,7 +2584,7 @@ class StatesAppState extends State<StatesApp> {
                                       Container(
                                           margin: EdgeInsets.only(left: 10),
                                           child: Text(
-                                              precioMejoraGlobal8.toString(),
+                                              improve.precioMejoraGlobal8.toString(),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14))),

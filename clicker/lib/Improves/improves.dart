@@ -231,6 +231,7 @@ class Improves {
         contadorMejora2++;
       }
       if (contadorMejora2 > 2 && mejora8Utilizada == false) {
+        print("se ha utilizado el bufo");
         player.play(AssetSource("SonidoBufo.mp3"));
         snackBars.bufoArco(context);
         monedasRecibidas = 60;
@@ -556,7 +557,62 @@ class Improves {
       }
     }
 
+    //Mejora7
+    void mejora7(datosJugador, context) {
+      if (contadorMejora7 == 0 && datosJugador.monedas > precio1Mejora7) {
+        snackBars.mostrarMejoraComprada(context);
+        //Actualizamos el numero de bombas que tenemos
+        bombas = bombas + cantidadBombasV1;
+        //Actualizamos el precio del jugador
+        datosJugador.monedas = datosJugador.monedas - precio1Mejora7;
+        player.play(AssetSource("SonidoBombasActivadas.mp3"));
+        //Actualizamos el precio de la mejora
+        precioMejoraGlobal7 = precio2Mejora7;
+        mejora7V1 = true;
+        //Incrementamos el contador
+        contadorMejora7++;
+      }
+      if (contadorMejora7 == 1 && datosJugador.monedas > precio2Mejora7) {
+        snackBars.mostrarMejoraComprada(context);
+        bombas = bombas + cantidadBombasV2;
+        datosJugador.monedas = datosJugador.monedas - precio2Mejora7;
+        precioMejoraGlobal7 = precio3Mejora7;
+        player.play(AssetSource("SonidoBombasActivadas.mp3"));
+        mejora7V2 = true;
+        contadorMejora7++;
+      }
+      if (contadorMejora7 == 2 && datosJugador.monedas > precio3Mejora7) {
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
+        bombas = bombas + cantidadBombasV3;
+        datosJugador.monedas = datosJugador.monedas - precio3Mejora7;
+        player.play(AssetSource("SonidoBombasActivadas.mp3"));
+        mejora7V3 = true;
+        //Incrementamos el contador
+        contadorMejora7++;
+      }
+      if (contadorMejora7 > 2 && datosJugador.monedas > precio3Mejora7) {
+        bombas = bombas + cantidadBombasV3;
+        datosJugador.monedas = datosJugador.monedas - precio3Mejora7;
+        player.play(AssetSource("SonidoBombasActivadas.mp3"));
+      }
     }
+
+        //Mejora 8
+    void mejora8(datosJugador, context) {
+      if (contadorMejora8 == 0 && datosJugador.monedas > precio1Mejora8) {
+        datosJugador.monedas = datosJugador.monedas - precio1Mejora8;
+        precioMejoraGlobal8 = precio2Mejora8;
+        player.play(AssetSource("SonidoActivacionBufo.mp3"));
+        snackBars.mostrarMejoraComprada(context);
+        contadorMejora8++;
+        mejora8Utilizada = false;
+      }
+    }
+
+    }
+
+    
 
 
 
