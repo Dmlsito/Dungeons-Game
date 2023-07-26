@@ -3,6 +3,7 @@
 import 'package:clicker/Complementos/NivelesDeMejoras.dart';
 import 'package:clicker/Complementos/snackBars.dart';
 import 'package:clicker/Improves/improves.dart';
+import 'package:clicker/Principales/login.dart';
 import 'package:clicker/RecuperacionDatos/comprobaciones.dart';
 import 'package:clicker/playerActions.dart/actions.dart';
 
@@ -103,6 +104,7 @@ List<monstruo> listaMonstruos = [
     identificador: 12,
   ),
 ];
+
 List<String> listaMundos = [
   "assets/Mundo1.jpg",
   "assets/Mundo2.jpg",
@@ -117,7 +119,6 @@ int indexImagen = 0;
 // Vida inicial
 double vida = listaMonstruos[contador].vida;
 // Timers para variables por dps
-String colorPrueba = "0xffF856DF";
 Color colorLetras = Color(0xff660000);
 
 //Timers
@@ -144,81 +145,10 @@ int monedasJugador = 0;
 int monedasRecibidas = 5;
 double golpeSencillo = 100;
 double golpeGlobal = golpeGlobal + golpeSencillo;
-double golpeCritico = 1000;
-bool probabilidadCritico = true;
-int temporizadorDeCritico = 0;
+
 
 
 //Precios y variables para controlar la posicion aleaotoria de las imagenes de la mejora5
-double rngLeft = 0;
-double rngTop = 0;
-int contadorMejora5 = 0;
-int precioMejoraGlobal5 = 100;
-int precio1Mejora5 = 100;
-int precio2Mejora5 = 400;
-int precio3Mejora5 = 900;
-String imagenAleatoria = "assets/ImagenAleatoria.png";
-int monedasGanadasPorImagen = 0;
-int mostrarMejora5Maxima = 0;
-bool mejora5V1 = false;
-bool mejora5V2 = false;
-bool mejora5V3 = false;
-
-//Variables de mejora6
-int contadorMejora6 = 0;
-int precioMejoraGlobal6 = 50;
-int precio1Mejora6 = 50;
-int precio2Mejora6 = 300;
-int precio3Mejora6 = 600;
-bool mejora6V1 = false;
-bool mejora6V2 = false;
-bool mejora6V3 = false;
-
-//Variables de mejora7
-int contadorMejora7 = 0;
-int precioMejoraGlobal7 = 50;
-int precio1Mejora7 = 50;
-int precio2Mejora7 = 300;
-int precio3Mejora7 = 500;
-bool mejora7V1 = false;
-bool mejora7V2 = false;
-bool mejora7V3 = false;
-int bombas = 0;
-int cantidadBombasV1 = 3;
-int cantidadBombasV2 = 6;
-int cantidadBombasV3 = 9;
-int danoBomba = 400;
-
-
-
-//Variables de mejora9
-int contadorMejora9 = 0;
-bool mejora9V1 = false;
-bool mejora9V2 = false;
-bool mejora9V3 = false;
-int precio1Mejora9 = 50;
-int precio2Mejora9 = 100;
-int precio3Mejora9 = 150;
-int precioMejoraGlobal9 = 50;
-int danoHielo = 100;
-bool lluviaHeladaV1 = true;
-bool lluviaHeladaV2 = true;
-bool lluviaHeladaV3 = true;
-int duracionTormenta = 0;
-int tiempoTormenta = 30;
-int tiempoAmostrar = 0;
-
-//Variables de mejora10
-int contadorMejora10 = 0;
-bool mejora10V1 = false;
-bool mejora10V2 = false;
-bool mejora10V3 = false;
-int precio1Mejora10 = 50;
-int precio2Mejora10 = 100;
-int precio3Mejora10 = 150;
-int precioMejoraGlobal10 = 50;
-int contadorTiempoVeneno = 0;
-int veneno = 0;
 
 // Variable para comparar con la vidaMax de un monstruo e
 // ir actualizando la barra de vida
@@ -308,280 +238,15 @@ class StatesAppState extends State<StatesApp> {
       anchoPantalla = size.width;
     });
 
-    //Fucion vidaResta
-    void vidaResta() {
-      /*Cuando ya se haya gastado el turno del jugador seteamos al false y setemaos el turno del monstruo a true
-      turnoJugador = false;
-      turnoMonstruo = true;
-*/
 
-      // Resto uno de vida y sumo 5 monedas
-      setState(() {
-        print("Las monedas son: " + monedasJugador.toString());
-        temporizadorDeCritico++;
-        vida = vida - golpeGlobal;
-        // print("Vida: " + vida.toString());
-        datosJugador.monedas = datosJugador.monedas + monedasRecibidas;
-
-        //Este print es de prueba
-        print(
-            "Las monedas del jugador son: " + datosJugador.monedas.toString());
-        // monedasJugador = monedasJugador + monedasRecibidas;
-        // print("Monedas: " + monedasJugador.toString());
-        if (vida < 0) {
-          //Cuando el monstruo muere sonara esto
-          player.play(AssetSource("SonidoMuerteMonstruo.mp3"));
-
-          // contador++;
-          // numeroMonstruo = contador;
-          // datosJugador.monstruo = numeroMonstruo;
-          datosJugador.monstruo++;
-          contador = datosJugador.monstruo;
-          //datosJugador.monstruo = numeroMonstruo;
-          // Cambiamos de monstruo en función al contador por lo que asignamos a las variables su vida y su ruta de imagen
-          vida = listaMonstruos[datosJugador.monstruo].vida;
-          rutaMonstruo = listaMonstruos[datosJugador.monstruo].imagenRuta;
-          // Actualizo las variables para barra de vida
-          vidaMax90 = (vida * 0.9);
-          vidaMax80 = (vida * 0.8);
-          vidaMax70 = (vida * 0.7);
-          vidaMax60 = (vida * 0.6);
-          vidaMax50 = (vida * 0.5);
-          vidaMax40 = (vida * 0.4);
-          vidaMax30 = (vida * 0.3);
-          vidaMax20 = (vida * 0.2);
-          vidaMax10 = (vida * 0.1);
-          v = 1;
-
-          //Controlamos que si ha matado mas de 3 mundos pero menos de 6 el mundo se actualizara
-          if (datosJugador.monstruo >= 3 && datosJugador.monstruo <= 6) {
-            datosJugador.mundo = 1;
-          }
-          if (datosJugador.monstruo >= 6 && datosJugador.monstruo <= 9) {
-            datosJugador.mundo = 2;
-          }
-          if (datosJugador.monstruo >= 9 && datosJugador.monstruo <= 13) {
-            datosJugador.mundo = 3;
-          }
-        }
-      });
-    }
+  
 
     //Funcion para la musica
     void playFile(String url) {
       player.play(AssetSource(url));
     }
 
-
-
-    
-    
-
-    //Mejora 9
-    void mejora9() {
-      if (contadorMejora9 == 0 && datosJugador.monedas > precio1Mejora9) {
-        duracionTormenta = 30;
-        mejora9V1 = true;
-
-        setState(() {
-          //Actualizamos el precio de la mejora
-          precioMejoraGlobal9 = precio2Mejora9;
-          datosJugador.monedas = datosJugador.monedas - precio1Mejora9;
-          player.play(AssetSource("RuidoTormenta.mp3"));
-        });
-        contadorMejora9++;
-        snackBars.mostrarMejoraComprada(context);
-        snackBars.escarchaON(context);
-        timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
-          if (lluviaHeladaV1 == true) {
-            setState(() {
-              //Empiza la tormenta
-              duracionTormenta = duracionTormenta - 1;
-              //Le restamos el daño que hara por segundo la lluvia helada
-              vida = vida - danoHielo;
-            });
-            //El tiempo de duracion de la tormenta sera de treinte segundos
-            if (duracionTormenta == 0) {
-              //Indicamos que el contador de la tormenta se reinicie
-              duracionTormenta = 30;
-              //Indicamos que la lluvia helada ha parado
-              lluviaHeladaV1 = false;
-              snackBars.escarchaOF(context);
-            }
-          }
-        });
-      }
-      if (contadorMejora9 == 1 && datosJugador.monedas > precio2Mejora9) {
-        duracionTormenta = 60;
-        mejora9V2 = true;
-        snackBars.mostrarMejoraComprada(context);
-        setState(() {
-          player.play(AssetSource("RuidoTormenta.mp3"));
-          precioMejoraGlobal9 = precio3Mejora9;
-          datosJugador.monedas = datosJugador.monedas - precio2Mejora9;
-        });
-        contadorMejora9++;
-        snackBars.escarchaON(context);
-        timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
-          if (lluviaHeladaV2 == true) {
-            setState(() {
-              duracionTormenta--;
-              vida = vida - danoHielo;
-            });
-            //La duracion de la tormenta sera de sesenta segundos
-            if (duracionTormenta == 0) {
-              duracionTormenta = 60;
-              lluviaHeladaV2 = false;
-              snackBars.escarchaOF(context);
-            }
-          }
-        });
-      }
-      if (contadorMejora9 == 2 && datosJugador.monedas > precio3Mejora9) {
-        duracionTormenta = 90;
-        mejora9V3 = true;
-        snackBars.mostrarMejoraComprada(context);
-        snackBars.mostrarMaximaMejora(context);
-        setState(() {
-          player.play(AssetSource("RuidoTormenta.mp3"));
-          datosJugador.monedas = datosJugador.monedas - precio3Mejora9;
-        });
-        contadorMejora9++;
-        snackBars.escarchaON(context);
-        timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
-          if (lluviaHeladaV3 == true) {
-            duracionTormenta--;
-
-            setState(() {
-              duracionTormenta--;
-              vida = vida - danoHielo;
-            });
-            // La duracion de la tormenta sera de un minuto y medio
-            if (duracionTormenta == 0) {
-              lluviaHeladaV3 = false;
-
-              duracionTormenta = 90;
-              snackBars.escarchaOF(context);
-            }
-          }
-        });
-      }
-      if (contadorMejora9 > 2 && datosJugador.monedas > precio3Mejora9) {
-        snackBars.mostrarMejoraComprada(context);
-        setState(() {
-          player.play(AssetSource("RuidoTormenta.mp3"));
-          datosJugador.monedas = datosJugador.monedas - precio3Mejora9;
-        });
-        contadorMejora9++;
-        snackBars.escarchaON(context);
-        timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
-          if (lluviaHeladaV3 == true) {
-            duracionTormenta--;
-
-            setState(() {
-              duracionTormenta--;
-              vida = vida - danoHielo;
-            });
-            //La duracion de la tormenta sera de 90 segundos
-            if (duracionTormenta == 90) {
-              duracionTormenta = 0;
-              lluviaHeladaV3 = false;
-              snackBars.escarchaOF(context);
-            }
-          }
-        });
-      }
-    }
-
-    //Mejora 10
-
-    void mejora10() {
-      if (contadorMejora10 == 0 && datosJugador.monedas > precio1Mejora10) {
-        veneno = 100;
-        //Seteamos el indicador de mejora a true
-        mejora10V1 = true;
-        //Mostramos un snackBar que nos diga que la mejora esta comprada
-        snackBars.mostrarMejoraComprada(context);
-        //Mostramos un snackBar para indicar que el monstruo ha sido envenenado
-        snackBars.venenoV1(context);
-        //Incrementamos el contador de la mejora
-        contadorMejora10++;
-        setState(() {
-          //Sonido de la habilidad
-          player.play(AssetSource("Veneno.mp3"));
-          //Actualizamos el precio una vez que compramos la mejora
-          precioMejoraGlobal10 = precio2Mejora10;
-          //Actualizamos la cantidad de monedas que tendra el jugador una vez ha comprado la mejora
-         datosJugador.monedas = datosJugador.monedas - precio1Mejora10;
-        });
- 
-        //Creamos un timer para controlar que hara esta mejora por segundo
-        timer4 = Timer.periodic(Duration(seconds: 1), (timer) {
-          //Incrementamos la duracion del veneno
-          contadorTiempoVeneno++;
-          setState(() {
-            //El valor que le estamos restando a la vida sera el el daño veneno es decir el daño dps por segundo
-            vida = vida - veneno;
-          });
-        });
-      }
-      if (contadorMejora10 == 1 && datosJugador.monedas > precio2Mejora10) {
-        veneno = 200;
-        mejora10V2 = true;
-        snackBars.mostrarMejoraComprada(context);
-        snackBars.venenoV2(context);
-        contadorMejora10++;
-        setState(() {
-          player.play(AssetSource("Veneno.mp3"));
-          precioMejoraGlobal10 = precio3Mejora10;
-          datosJugador.monedas = datosJugador.monedas- precio2Mejora10;
-        });
-
-        timer4 = Timer.periodic(Duration(seconds: 1), (timer) {
-          contadorTiempoVeneno++;
-          setState(() {
-            vida = vida - veneno;
-          });
-        });
-      }
-      if (contadorMejora10 == 2 && datosJugador.monedas > precio3Mejora10) {
-        veneno = 300;
-        mejora10V3 = true;
-        snackBars.mostrarMejoraComprada(context);
-        snackBars.mostrarMaximaMejora(context);
-        snackBars.venenoV3(context);
-        contadorMejora10++;
-        setState(() {
-         datosJugador.monedas = datosJugador.monedas - precio3Mejora10;
-        });
-
-        timer4 = Timer.periodic(Duration(seconds: 1), (timer) {
-          contadorTiempoVeneno++;
-          setState(() {
-            player.play(AssetSource("Veneno.mp3"));
-            vida = vida - veneno;
-          });
-        });
-      }
-
-      if (contadorMejora10 > 2 && improve.mejora8Utilizada == false) {
-        veneno = 500;
-        setState(() {
-          player.play(AssetSource("SonidoBufo.mp3"));
-          vida = vida - veneno;
-        });
-        snackBars.bufoVeneno(context);
-      }
-    }
-
-    //Si el rng (numero aleatorio entre 0 y 9) es igual a 4 el golpe global sera un critico, sino sera un golpeSencillo
-    void critico() {
-      Random random = Random();
-      int rng = random.nextInt(10);
-      temporizadorDeCritico > 10 && rng == 4
-          ? golpeGlobal = golpeCritico
-          : golpeGlobal = golpeSencillo;
-    }
+   
 
     void salir(BuildContext context) {
       Navigator.of(context).pushNamed("/Login");
@@ -821,16 +486,16 @@ class StatesAppState extends State<StatesApp> {
                            width: 50,
                            height: 32,
                             //Valores de margen aleatorios, MENOS EL TOP Y EL BOTTOM
-                            margin: EdgeInsets.only(top: rngTop, left: rngLeft),
+                            margin: EdgeInsets.only(top: improve.rngTop, left: improve.rngLeft),
                                 child: InkWell(
-                                  child: Image.asset(imagenAleatoria),
+                                  child: Image.asset(improve.imagenAleatoria),
                                   onTap: () {
                                   setState(() {
                                     missing =  true;
                                     player.play(AssetSource(
                                         "SonidoImagenEncontrada.mp3"));
-                                    monedasJugador = monedasJugador +
-                                        monedasGanadasPorImagen;
+                                    datosJugador.monedas = datosJugador.monedas +
+                                        improve.monedasGanadasPorImagen;
                                   });
                                   //Una vez se haya clickado en la imagen esta desaparecera
                                 })),
@@ -845,10 +510,9 @@ class StatesAppState extends State<StatesApp> {
                       child: Column(children: [
                         InkWell(
                           onTap: () {
-                            critico();
-                            vidaResta();
                             setState(() {
-                              // playFile("assets/Theme.mp3");
+                               playerAction.critico();
+                               playerAction.vidaResta(datosJugador, rutaMonstruo, listaMonstruos);
                             });
                           },
                           // ignore: sized_box_for_whitespace
@@ -995,12 +659,12 @@ class StatesAppState extends State<StatesApp> {
                                                                   .toString() +
                                                               "\n \n"
                                                                   "Duracion tormenta: " +
-                                                              duracionTormenta
+                                                              improve.duracionTormenta
                                                                   .toString() +
                                                               "s" +
                                                               "\n \n"
                                                                   "Daño veneno/s: " +
-                                                              veneno.toString(),
+                                                              improve.veneno.toString(),
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
@@ -1050,7 +714,6 @@ class StatesAppState extends State<StatesApp> {
                           //Este container contendra TODO
                           Container(
                               width: 160,
-
                               //Columna que contendra la imagen y la fila con el precio de la mejora y la imagen de las monedas
                               child: Column(children: [
                                 Container(
@@ -1061,7 +724,6 @@ class StatesAppState extends State<StatesApp> {
                                         margin: EdgeInsets.only(right: 15),
                                         child: InkWell(
                                             onTap: () {
-                                              setState(() {});
                                               showDialog(
                                                   context: context,
                                                   builder:
@@ -2026,7 +1688,7 @@ class StatesAppState extends State<StatesApp> {
                                       Container(
                                           margin: EdgeInsets.only(left: 10),
                                           child: Text(
-                                              precioMejoraGlobal5.toString(),
+                                              improve.precioMejoraGlobal5.toString(),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14))),
@@ -2221,7 +1883,7 @@ class StatesAppState extends State<StatesApp> {
                                       Container(
                                           margin: EdgeInsets.only(left: 10),
                                           child: Text(
-                                              precioMejoraGlobal6.toString(),
+                                              improve.precioMejoraGlobal6.toString(),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14))),
@@ -2718,7 +2380,7 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento1Mejora9(mejora9V1),
+                                            .incremento1Mejora9(improve.mejora9V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2728,7 +2390,7 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento2Mejora9(mejora9V2),
+                                            .incremento2Mejora9(improve.mejora9V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2738,7 +2400,7 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento3Mejora9(mejora9V3),
+                                            .incremento3Mejora9(improve.mejora9V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2751,7 +2413,7 @@ class StatesAppState extends State<StatesApp> {
                                     height: 116,
                                     child: InkWell(
                                       onTap: () {
-                                        mejora9();
+                                        improve.mejora9(datosJugador, context);
                                       },
                                     ),
                                     decoration: BoxDecoration(
@@ -2777,7 +2439,7 @@ class StatesAppState extends State<StatesApp> {
                                       Container(
                                           margin: EdgeInsets.only(left: 5),
                                           child: Text(
-                                              precioMejoraGlobal9.toString(),
+                                              improve.precioMejoraGlobal9.toString(),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14))),
@@ -2912,7 +2574,7 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento1Mejora10(mejora10V1),
+                                            .incremento1Mejora10(improve.mejora10V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2922,7 +2584,7 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento2Mejora10(mejora10V2),
+                                            .incremento2Mejora10(improve.mejora10V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2932,7 +2594,7 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento3Mejora10(mejora10V3),
+                                            .incremento3Mejora10(improve.mejora10V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2945,7 +2607,7 @@ class StatesAppState extends State<StatesApp> {
                                     height: 116,
                                     child: InkWell(
                                       onTap: () {
-                                        mejora10();
+                                        improve.mejora10(datosJugador, context);
                                       },
                                     ),
                                     decoration: BoxDecoration(
@@ -2971,7 +2633,7 @@ class StatesAppState extends State<StatesApp> {
                                       Container(
                                           margin: EdgeInsets.only(left: 10),
                                           child: Text(
-                                              precioMejoraGlobal10.toString(),
+                                              improve.precioMejoraGlobal10.toString(),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14))),
@@ -2991,6 +2653,8 @@ class StatesAppState extends State<StatesApp> {
               ]),
             )));
   }
+  
+  
 }
 
 /*Funciones adicionales de ataque del monstruo

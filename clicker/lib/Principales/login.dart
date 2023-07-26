@@ -228,4 +228,11 @@ class clase1 extends State<StatesApp> {
   register(BuildContext context) {
     Navigator.of(context).pushNamed("/Register");
   }
+  
+  @override
+  void initState() {
+    super.initState();
+    player2.play( AssetSource("Theme.mp3"));
+
+  }
 }

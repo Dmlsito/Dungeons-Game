@@ -610,6 +610,167 @@ class Improves {
       }
     }
 
+     //Mejora 9
+    void mejora9(datosJugador, context) {
+      if (contadorMejora9 == 0 && datosJugador.monedas > precio1Mejora9) {
+        duracionTormenta = 30;
+        mejora9V1 = true;
+        //Actualizamos el precio de la mejora
+        precioMejoraGlobal9 = precio2Mejora9;
+        datosJugador.monedas = datosJugador.monedas - precio1Mejora9;
+        player.play(AssetSource("RuidoTormenta.mp3"));
+        contadorMejora9++;
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.escarchaON(context);
+        timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
+          if (lluviaHeladaV1 == true) {
+              //Empiza la tormenta
+              duracionTormenta = duracionTormenta - 1;
+              //Le restamos el daño que hara por segundo la lluvia helada
+              vida = vida - danoHielo;
+         
+            //El tiempo de duracion de la tormenta sera de treinte segundos
+            if (duracionTormenta == 0) {
+              //Indicamos que el contador de la tormenta se reinicie
+              duracionTormenta = 30;
+              //Indicamos que la lluvia helada ha parado
+              lluviaHeladaV1 = false;
+              snackBars.escarchaOF(context);
+            }
+          }
+        });
+      }
+      if (contadorMejora9 == 1 && datosJugador.monedas > precio2Mejora9) {
+        duracionTormenta = 60;
+        mejora9V2 = true;
+        snackBars.mostrarMejoraComprada(context);
+        player.play(AssetSource("RuidoTormenta.mp3"));
+        precioMejoraGlobal9 = precio3Mejora9;
+        datosJugador.monedas = datosJugador.monedas - precio2Mejora9;
+        contadorMejora9++;
+        snackBars.escarchaON(context);
+        timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
+          if (lluviaHeladaV2 == true) {
+              duracionTormenta--;
+              vida = vida - danoHielo;  
+            //La duracion de la tormenta sera de sesenta segundos
+            if (duracionTormenta == 0) {
+              duracionTormenta = 60;
+              lluviaHeladaV2 = false;
+              snackBars.escarchaOF(context);
+            }
+          }
+        });
+      }
+      if (contadorMejora9 == 2 && datosJugador.monedas > precio3Mejora9) {
+        duracionTormenta = 90;
+        mejora9V3 = true;
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
+        player.play(AssetSource("RuidoTormenta.mp3"));
+        datosJugador.monedas = datosJugador.monedas - precio3Mejora9;
+        contadorMejora9++;
+        snackBars.escarchaON(context);
+        timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
+          if (lluviaHeladaV3 == true) {
+            duracionTormenta--;
+            duracionTormenta--;
+            vida = vida - danoHielo;
+            // La duracion de la tormenta sera de un minuto y medio
+            if (duracionTormenta == 0) {
+              lluviaHeladaV3 = false;
+              duracionTormenta = 90;
+              snackBars.escarchaOF(context);
+            }
+          }
+        });
+      }
+      if (contadorMejora9 > 2 && datosJugador.monedas > precio3Mejora9) {
+        snackBars.mostrarMejoraComprada(context);
+        player.play(AssetSource("RuidoTormenta.mp3"));
+        datosJugador.monedas = datosJugador.monedas - precio3Mejora9;
+        contadorMejora9++;
+        snackBars.escarchaON(context);
+        timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
+          if (lluviaHeladaV3 == true) {
+            duracionTormenta--;
+            vida = vida - danoHielo;
+            //La duracion de la tormenta sera de 90 segundos
+            if (duracionTormenta == 90) {
+              duracionTormenta = 0;
+              lluviaHeladaV3 = false;
+              snackBars.escarchaOF(context);
+            }
+          }
+        });
+      }
+    }
+
+    //Mejora 10
+    
+    void mejora10(datosJugador, context) {
+      if (contadorMejora10 == 0 && datosJugador.monedas > precio1Mejora10) {
+        veneno = 100;
+        //Seteamos el indicador de mejora a true
+        mejora10V1 = true;
+        //Mostramos un snackBar que nos diga que la mejora esta comprada
+        snackBars.mostrarMejoraComprada(context);
+        //Mostramos un snackBar para indicar que el monstruo ha sido envenenado
+        snackBars.venenoV1(context);
+        //Incrementamos el contador de la mejora
+        contadorMejora10++;
+        //Sonido de la habilidad
+        player.play(AssetSource("Veneno.mp3"));
+        //Actualizamos el precio una vez que compramos la mejora
+        precioMejoraGlobal10 = precio2Mejora10;
+        //Actualizamos la cantidad de monedas que tendra el jugador una vez ha comprado la mejora
+        datosJugador.monedas = datosJugador.monedas - precio1Mejora10;
+        //Creamos un timer para controlar que hara esta mejora por segundo
+        timer4 = Timer.periodic(Duration(seconds: 1), (timer) {
+          //Incrementamos la duracion del veneno
+          contadorTiempoVeneno++;
+            //El valor que le estamos restando a la vida sera el el daño veneno es decir el daño dps por segundo
+            vida = vida - veneno;
+          
+        });
+      }
+      if (contadorMejora10 == 1 && datosJugador.monedas > precio2Mejora10) {
+        veneno = 200;
+        mejora10V2 = true;
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.venenoV2(context);
+        contadorMejora10++;
+        player.play(AssetSource("Veneno.mp3"));
+        precioMejoraGlobal10 = precio3Mejora10;
+        datosJugador.monedas = datosJugador.monedas- precio2Mejora10;
+        timer4 = Timer.periodic(Duration(seconds: 1), (timer) {
+          contadorTiempoVeneno++;
+          vida = vida - veneno;
+          });
+      }
+      if (contadorMejora10 == 2 && datosJugador.monedas > precio3Mejora10) {
+        veneno = 300;
+        mejora10V3 = true;
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
+        snackBars.venenoV3(context);
+        contadorMejora10++;
+        datosJugador.monedas = datosJugador.monedas - precio3Mejora10;
+        timer4 = Timer.periodic(Duration(seconds: 1), (timer) {
+        contadorTiempoVeneno++;
+        player.play(AssetSource("Veneno.mp3"));
+            vida = vida - veneno;
+        });
+      }
+
+      if (contadorMejora10 > 2 && improve.mejora8Utilizada == false) {
+        veneno = 500;
+        player.play(AssetSource("SonidoBufo.mp3"));
+        vida = vida - veneno;
+        snackBars.bufoVeneno(context);
+      }
+    }
+
     }
 
     
